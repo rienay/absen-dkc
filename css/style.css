@@ -43,8 +43,10 @@
 }
 
 html {
-  font-size: 15px;
+  font-size: 16px;
   -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -55,6 +57,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overscroll-behavior-y: none;
 }
 
 /* ==========================================================================
@@ -907,31 +910,224 @@ footer.app-footer {
 }
 
 /* ==========================================================================
-   RESPONSIF MOBILE
+   POSTER QR CODE PRESENSI SANGGAR
    ========================================================================== */
+
+.qr-poster-card {
+  text-align: center;
+  padding: 18px;
+  background: #ffffff;
+  border: 2px solid var(--border-line);
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+}
+
+.qr-poster-header {
+  border-bottom: 2px solid var(--green-primary);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.qr-poster-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--green-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.qr-poster-sub {
+  font-size: 0.8rem;
+  color: var(--ink-secondary);
+  font-weight: 600;
+}
+
+.qr-image-frame {
+  display: inline-block;
+  padding: 10px;
+  background: #ffffff;
+  border: 1px solid var(--border-line);
+  border-radius: var(--radius-sm);
+  margin: 12px auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.qr-image-frame img {
+  width: 220px;
+  height: 220px;
+  display: block;
+  object-fit: contain;
+}
+
+.qr-poster-instruksi {
+  font-size: 0.82rem;
+  color: var(--ink-secondary);
+  max-width: 320px;
+  margin: 0 auto;
+  line-height: 1.4;
+}
+
+/* Banner Sukses Presensi di Tab Rekap */
+.alert-success-redirect {
+  background: #ecfdf5;
+  border: 1.5px solid #6ee7b7;
+  color: #065f46;
+  padding: 14px 18px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 18px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  animation: slideDownAlert 0.3s ease-out;
+}
+
+@keyframes slideDownAlert {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   RESPONSIF MOBILE & TOUCH FIRST
+   ========================================================================== */
+
+.btn, .tab-btn {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
 
 @media (max-width: 768px) {
   header.main-header {
-    padding: 16px;
+    padding: 14px 16px;
   }
   .brand-logo-frame {
-    width: 58px;
-    height: 58px;
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-sm);
   }
   .brand-title {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
   }
-  .nav-container,
+  .brand-subtitle {
+    font-size: 0.78rem;
+  }
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 6px;
+  }
+  .live-clock-badge {
+    display: none; /* hemat tempat di mobile */
+  }
+
+  .nav-container {
+    padding: 0 10px;
+    margin-top: 12px;
+  }
+  .nav-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 4px;
+    padding: 4px;
+  }
+  .nav-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .tab-btn {
+    white-space: nowrap;
+    padding: 9px 13px;
+    font-size: 0.84rem;
+    min-height: 44px;
+  }
+
   main.app-main {
-    padding: 0 12px;
+    padding: 0 10px;
+    margin-top: 12px;
+    margin-bottom: 24px;
   }
   .card {
-    padding: 16px;
+    padding: 15px;
+    border-radius: var(--radius-sm);
   }
   .stats-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .stat-box {
+    padding: 12px;
+  }
+  .stat-number {
+    font-size: 1.55rem;
   }
   .form-grid {
     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* Wajib 16px di mobile agar iOS Safari tidak zoom otomatis */
+  .form-control,
+  select.form-control,
+  input.form-control,
+  textarea.form-control {
+    font-size: 16px !important;
+    min-height: 46px;
+  }
+
+  .btn {
+    width: 100%;
+    min-height: 46px;
+    font-size: 0.9rem;
+  }
+  .btn-group {
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .camera-viewfinder-wrapper {
+    height: 240px;
+  }
+  .camera-controls .btn-camera-util,
+  .camera-controls .btn-capture {
+    flex: 1 1 calc(50% - 8px);
+    justify-content: center;
+    min-height: 42px;
+  }
+}
+
+/* ==========================================================================
+   PRINT MEDIA STYLES (UNTUK CETAK POSTER QR CODE)
+   ========================================================================== */
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #qrPosterPrintArea, #qrPosterPrintArea * {
+    visibility: visible;
+  }
+  #qrPosterPrintArea {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+    border: none;
+    box-shadow: none;
+  }
+  .modal-backdrop {
+    background: transparent !important;
+    position: static;
+  }
+  .modal-dialog {
+    box-shadow: none;
+    border: none;
+    max-width: 100%;
+  }
+  .modal-footer, .modal-close-btn {
+    display: none !important;
   }
 }

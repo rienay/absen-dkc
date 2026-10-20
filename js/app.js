@@ -501,6 +501,25 @@ async function handleAttendanceSubmit(e) {
   $('attActivity').value = '';
   cameraManager.clear();
   renderAll();
+
+  // Otomatis arahkan ke menu Rekap & Peringkat setelah presensi selesai
+  setTimeout(() => {
+    activateTab('rekap');
+    $('reportMonth').value = date.slice(0, 7);
+    renderReport();
+
+    const banner = $('rekapSuccessAlert');
+    if (banner) {
+      banner.style.display = 'block';
+      banner.innerHTML = `
+        <strong>✅ Presensi Berhasil Tercatat!</strong><br>
+        Terima kasih, Kak <b>${esc(member.nama)}</b> (NTA: <b>${esc(member.nta)}</b>). 
+        Presensi Anda pada tanggal <b>${esc(date)}</b> telah resmi tersimpan di database sanggar.
+        Berikut adalah peringkat dan akumulasi kehadiran Anda bulan ini:
+      `;
+      banner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, 400);
 }
 
 // Anggota Submit (Simpan / Update)
@@ -932,6 +951,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // QR Code Presensi Sanggar Modal
+  const getPresensiScanUrl = () => {
+    const origin = window.location.origin;
+    const pathname = window.location.pathname;
+    return `${origin}${pathname}#presensi`;
+  };
+
+  $('btnOpenQrModal')?.addEventListener('click', () => {
+    const scanUrl = getPresensiScanUrl();
+    const qrImg = $('qrCodeImg');
+    const targetText = $('qrTargetUrlText');
+    if (qrImg) {
+      qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=${encodeURIComponent(scanUrl)}`;
+    }
+    if (targetText) {
+      targetText.textContent = scanUrl;
+    }
+    $('qrModal')?.classList.add('active');
+  });
+
+  $('closeQrModalBtn')?.addEventListener('click', () => {
+    $('qrModal')?.classList.remove('active');
+  });
+
+  $('copyQrLinkBtn')?.addEventListener('click', () => {
+    const scanUrl = getPresensiScanUrl();
+    navigator.clipboard.writeText(scanUrl).then(() => {
+      showToast('Link presensi berhasil disalin!', 'success');
+    }).catch(() => {
+      showToast('Gagal menyalin link.', 'error');
+    });
+  });
+
+  $('printQrBtn')?.addEventListener('click', () => {
+    window.print();
+  });
+
   // Modal Guides
   $('openSetupGuideBtn')?.addEventListener('click', () => {
     $('setupGuideModal').classList.add('active');
@@ -963,6 +1019,15 @@ document.addEventListener('DOMContentLoaded', () => {
   $('attDate').value = `${yyyy}-${mm}-${dd}`;
   $('attMonth').value = `${yyyy}-${mm}`;
   $('reportMonth').value = `${yyyy}-${mm}`;
+
+  // Routing awal berdasarkan Hash URL (misal scan QR code langsung ke #presensi)
+  const initialHash = window.location.hash.replace('#', '').trim();
+  const validTabs = ['presensi', 'rekap', 'dashboard', 'anggota', 'pengaturan'];
+  if (initialHash && validTabs.includes(initialHash)) {
+    activateTab(initialHash);
+  } else {
+    activateTab('presensi');
+  }
 
   // Update NTA & render awal
   updateNtaInput();

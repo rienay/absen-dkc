@@ -36,6 +36,10 @@
         <div class="header-actions">
           <div class="live-clock-badge" id="liveClock">Memuat waktu...</div>
 
+          <button class="btn btn-secondary btn-sm" id="btnOpenQrModal" title="Tampilkan & Cetak QR Code Presensi Sanggar" style="background: rgba(255,255,255,0.18); color: #fff; border: 1px solid rgba(255,255,255,0.25);">
+            📱 QR Code Sanggar
+          </button>
+
           <div class="sync-status-indicator" id="headerStatusBadge">
             <span class="status-dot" id="headerStatusDot"></span>
             <span id="headerStatusText">Memeriksa database...</span>
@@ -201,6 +205,9 @@
          PANEL 2: REKAP & PERINGKAT KEHADIRAN
          ---------------------------------------------------------------------- -->
     <section id="rekap" class="panel">
+      <!-- Banner Notifikasi Sukses Presensi -->
+      <div id="rekapSuccessAlert" class="alert-success-redirect" style="display: none;"></div>
+
       <div class="card">
         <div class="card-header">
           <div class="card-title-group">
@@ -834,6 +841,36 @@ function jsonResponse(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
 }
         </pre>
+      </div>
+    </div>
+  <!-- ========================================================================
+       MODAL: QR CODE PRESENSI SANGGAR (UNTUK DITEMPEL DI SANGGAR)
+       ======================================================================== -->
+  <div class="modal-backdrop" id="qrModal">
+    <div class="modal-dialog" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 class="modal-title">QR Code Presensi Sanggar</h3>
+        <button type="button" class="modal-close-btn" id="closeQrModalBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="qr-poster-card" id="qrPosterPrintArea">
+          <div class="qr-poster-header">
+            <img src="/assets/logo.png" alt="DKC Cilacap" style="width: 54px; height: 54px; margin-bottom: 6px; object-fit: contain;">
+            <div class="qr-poster-title">PRESENSI SANGGAR BAKTI</div>
+            <div class="qr-poster-sub">DEWAN KERJA CABANG CILACAP</div>
+          </div>
+          <div class="qr-image-frame">
+            <img id="qrCodeImg" src="" alt="QR Code Presensi Sanggar">
+          </div>
+          <p class="qr-poster-instruksi">
+            Pindai QR Code ini menggunakan kamera HP untuk langsung membuka form presensi sanggar.
+          </p>
+          <div style="font-size: 0.72rem; color: var(--ink-muted); margin-top: 8px; word-break: break-all;" id="qrTargetUrlText"></div>
+        </div>
+      </div>
+      <div class="modal-footer" style="justify-content: space-between;">
+        <button type="button" class="btn btn-secondary btn-sm" id="copyQrLinkBtn">Salin Link Presensi</button>
+        <button type="button" class="btn btn-primary btn-sm" id="printQrBtn">Cetak Poster QR</button>
       </div>
     </div>
   </div>
