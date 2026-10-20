@@ -23,6 +23,55 @@ let pendingAdminTab = null;
 let cameraManager = null;
 let autoSyncTimer = null;
 
+// Cek apakah halaman dibuka via QR Code (Mode Anggota/Presensi) atau Portal Admin
+const urlParams = new URLSearchParams(window.location.search);
+const portalParam = (urlParams.get('portal') || urlParams.get('mode') || '').toLowerCase();
+const roleParam = (urlParams.get('role') || '').toLowerCase();
+
+// Jika diakses dengan link QR Anggota (?portal=presensi, ?mode=presensi, atau ?role=member)
+if (portalParam === 'presensi' || portalParam === 'member' || roleParam === 'member') {
+  sessionStorage.setItem('dkc_user_mode', 'member');
+} else if (portalParam === 'admin' || roleParam === 'admin') {
+  sessionStorage.setItem('dkc_user_mode', 'admin');
+}
+
+// Mode Anggota Terisolasi: jika URL menyertakan portal=presensi atau session tersimpan sebagai member
+let isMemberOnlyMode = (sessionStorage.getItem('dkc_user_mode') === 'member' || portalParam === 'presensi') && sessionStorage.getItem('dkc_user_mode') !== 'admin';
+
+// Fungsi pengontrol visibilitas tab admin vs pengguna umum
+function applyRoleVisibility() {
+  const protectedElements = document.querySelectorAll('[data-protected="true"]');
+  const qrHeaderBtn = $('btnOpenQrModal');
+  const adminFooterAction = $('adminFooterAction');
+  const adminToggleBtn = $('btnAdminAccessToggle');
+  const actionHeader = $('attActionHeader');
+  const actionCols = document.querySelectorAll('.admin-only-col');
+
+  if (isMemberOnlyMode && !adminUnlocked) {
+    // Sembunyikan semua menu & fitur admin untuk anggota yang scan QR Code
+    protectedElements.forEach(el => {
+      el.style.display = 'none';
+    });
+    if (qrHeaderBtn) qrHeaderBtn.style.display = 'none';
+    if (adminFooterAction) adminFooterAction.style.display = 'none'; // Sembunyikan total tombol admin di footer
+    if (actionHeader) actionHeader.style.display = 'none';
+    actionCols.forEach(el => { el.style.display = 'none'; });
+  } else {
+    // Tampilkan menu admin jika dibuka lewat portal admin atau setelah memasukkan PIN
+    protectedElements.forEach(el => {
+      el.style.display = '';
+    });
+    if (qrHeaderBtn) qrHeaderBtn.style.display = '';
+    if (adminFooterAction) adminFooterAction.style.display = '';
+    if (actionHeader) actionHeader.style.display = '';
+    actionCols.forEach(el => { el.style.display = ''; });
+
+    if (adminToggleBtn) {
+      adminToggleBtn.textContent = adminUnlocked ? '🔓 Mode Admin Aktif (Keluar / Kunci)' : '🔐 Akses Administrator';
+    }
+  }
+}
+
 // ==============================================================================
 // TOAST NOTIFICATION SYSTEM
 // ==============================================================================
@@ -150,6 +199,19 @@ function initNavigation() {
 }
 
 function activateTab(tabId) {
+  // Jika dalam mode anggota dan tab yang diminta dilindungi, tolak tegas dan kembalikan ke presensi
+  if ((tabId === 'anggota' || tabId === 'pengaturan') && !adminUnlocked) {
+    if (isMemberOnlyMode) {
+      tabId = 'presensi';
+      window.location.hash = '#presensi';
+      showToast('Halaman Data Anggota & Pengaturan terkunci untuk anggota umum.', 'error');
+    } else {
+      pendingAdminTab = tabId;
+      openAdminModal();
+      return;
+    }
+  }
+
   document.querySelectorAll('.tab-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.tab === tabId);
   });
@@ -271,8 +333,10 @@ function renderAttendanceTab() {
     return matchMonth && matchQuery;
   }).sort((a, b) => (b.date + (b.time || '')).localeCompare(a.date + (a.time || '')));
 
+  const showAdminCol = !isMemberOnlyMode || adminUnlocked;
+
   if (filteredAttendance.length === 0) {
-    $('attendanceTableBody').innerHTML = `<tr><td colspan="7" class="text-center" style="padding: 24px; color: var(--text-muted)">Tidak ada catatan presensi pada filter ini.</td></tr>`;
+    $('attendanceTableBody').innerHTML = `<tr><td colspan="${showAdminCol ? '7' : '6'}" class="text-center" style="padding: 24px; color: var(--text-muted)">Tidak ada catatan presensi pada filter ini.</td></tr>`;
   } else {
     $('attendanceTableBody').innerHTML = filteredAttendance.map(a => {
       const m = db.members.find(x => x.id === a.memberId) || { nta: a.nta || '-', nama: a.nama || 'Anggota', unit: a.unit || '-' };
@@ -286,11 +350,12 @@ function renderAttendanceTab() {
           <td>
             ${a.selfie ? `<button class="selfie-thumb-btn" onclick="window.viewSelfieModal('${a.id}')"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg> Lihat Foto</button>` : '-'}
           </td>
-          <td>
+          ${showAdminCol ? `
+          <td class="admin-only-col">
             <button class="btn btn-danger btn-sm" onclick="window.deleteAttendanceRecord('${a.id}')" title="Hapus Presensi">
               <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
             </button>
-          </td>
+          </td>` : ''}
         </tr>
       `;
     }).join('');
@@ -583,6 +648,12 @@ function resetMemberForm() {
 
 // Window Global Callbacks for inline table buttons
 window.editMemberRecord = (id) => {
+  if (!adminUnlocked) {
+    showToast('Akses ditolak: Hanya Administrator yang berhak mengubah data anggota.', 'error');
+    pendingAdminTab = 'anggota';
+    openAdminModal();
+    return;
+  }
   const m = db.members.find(x => x.id === id);
   if (!m) return;
 
@@ -605,6 +676,12 @@ window.editMemberRecord = (id) => {
 };
 
 window.deleteMemberRecord = (id) => {
+  if (!adminUnlocked) {
+    showToast('Akses ditolak: Hanya Administrator yang berhak menghapus anggota.', 'error');
+    pendingAdminTab = 'anggota';
+    openAdminModal();
+    return;
+  }
   const m = db.members.find(x => x.id === id);
   if (!m) return;
 
@@ -621,6 +698,15 @@ window.deleteMemberRecord = (id) => {
 };
 
 window.deleteAttendanceRecord = (id) => {
+  if (isMemberOnlyMode && !adminUnlocked) {
+    showToast('Akses ditolak: Pengguna umum tidak diizinkan menghapus data presensi.', 'error');
+    return;
+  }
+  if (!adminUnlocked) {
+    showToast('Akses ditolak: Hanya Administrator yang berhak menghapus presensi.', 'error');
+    openAdminModal();
+    return;
+  }
   if (confirm('Hapus catatan presensi ini?')) {
     db.attendance = db.attendance.filter(a => a.id !== id);
     StorageManager.saveDB(db);
@@ -846,14 +932,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const pin = $('adminPassword').value.trim();
     if (pin === settings.adminPin || pin === '1101') {
       adminUnlocked = true;
+      isMemberOnlyMode = false;
+      sessionStorage.setItem('dkc_user_mode', 'admin');
+      applyRoleVisibility();
       closeAdminModal();
-      showToast('Akses Admin Terbuka', 'success');
+      showToast('Akses Administrator Terbuka', 'success');
       activateTab(pendingAdminTab || 'anggota');
     } else {
       $('passwordError').textContent = 'Password salah. Coba lagi.';
       $('passwordDialog').classList.add('shake');
       setTimeout(() => $('passwordDialog').classList.remove('shake'), 400);
       $('adminPassword').select();
+    }
+  });
+
+  // Toggle Akses Admin dari Footer
+  $('btnAdminAccessToggle')?.addEventListener('click', () => {
+    if (adminUnlocked) {
+      adminUnlocked = false;
+      isMemberOnlyMode = true;
+      sessionStorage.setItem('dkc_user_mode', 'member');
+      applyRoleVisibility();
+      activateTab('presensi');
+      showToast('Telah keluar dari mode Administrator. Mode Anggota aktif.', 'info');
+    } else {
+      pendingAdminTab = 'anggota';
+      openAdminModal();
     }
   });
 
@@ -951,22 +1055,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // QR Code Presensi Sanggar Modal
+  // ============================================================================
+  // URL GENERATOR & MODAL QR CODE PRESENSI SANGGAR
+  // ============================================================================
+  // Link 1: Khusus Anggota (QR Code Presensi Sanggar) -> Halaman admin terkunci total
   const getPresensiScanUrl = () => {
     const origin = window.location.origin;
     const pathname = window.location.pathname;
-    return `${origin}${pathname}#presensi`;
+    return `${origin}${pathname}?portal=presensi#presensi`;
+  };
+
+  // Link 2: Khusus Pengurus & Administrator DKC
+  const getAdminPortalUrl = () => {
+    const origin = window.location.origin;
+    const pathname = window.location.pathname;
+    return `${origin}${pathname}?portal=admin`;
   };
 
   $('btnOpenQrModal')?.addEventListener('click', () => {
     const scanUrl = getPresensiScanUrl();
+    const adminUrl = getAdminPortalUrl();
     const qrImg = $('qrCodeImg');
     const targetText = $('qrTargetUrlText');
+    const adminUrlText = $('adminPortalUrlText');
+
     if (qrImg) {
       qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=${encodeURIComponent(scanUrl)}`;
     }
     if (targetText) {
       targetText.textContent = scanUrl;
+    }
+    if (adminUrlText) {
+      adminUrlText.textContent = adminUrl;
     }
     $('qrModal')?.classList.add('active');
   });
@@ -978,10 +1098,25 @@ document.addEventListener('DOMContentLoaded', () => {
   $('copyQrLinkBtn')?.addEventListener('click', () => {
     const scanUrl = getPresensiScanUrl();
     navigator.clipboard.writeText(scanUrl).then(() => {
-      showToast('Link presensi berhasil disalin!', 'success');
+      showToast('Link presensi anggota (terkunci) berhasil disalin!', 'success');
     }).catch(() => {
       showToast('Gagal menyalin link.', 'error');
     });
+  });
+
+  $('copyAdminLinkBtn')?.addEventListener('click', () => {
+    const adminUrl = getAdminPortalUrl();
+    navigator.clipboard.writeText(adminUrl).then(() => {
+      showToast('Link khusus Administrator berhasil disalin!', 'success');
+    }).catch(() => {
+      showToast('Gagal menyalin link.', 'error');
+    });
+  });
+
+  $('openAdminPortalBtn')?.addEventListener('click', () => {
+    $('qrModal')?.classList.remove('active');
+    pendingAdminTab = 'anggota';
+    openAdminModal();
   });
 
   $('printQrBtn')?.addEventListener('click', () => {
@@ -1020,13 +1155,45 @@ document.addEventListener('DOMContentLoaded', () => {
   $('attMonth').value = `${yyyy}-${mm}`;
   $('reportMonth').value = `${yyyy}-${mm}`;
 
+  // Terapkan pembatasan hak akses (Mode Anggota vs Mode Pengurus)
+  applyRoleVisibility();
+
+  // Proteksi Hash Navigation (mencegah manipulasi URL address bar oleh user umum)
+  window.addEventListener('hashchange', () => {
+    const hash = window.location.hash.replace('#', '').trim();
+    if (!hash) return;
+    if ((hash === 'anggota' || hash === 'pengaturan') && !adminUnlocked) {
+      if (isMemberOnlyMode) {
+        window.location.hash = '#presensi';
+        showToast('Halaman ini khusus Administrator & Pengurus.', 'error');
+        activateTab('presensi');
+        return;
+      } else {
+        pendingAdminTab = hash;
+        openAdminModal();
+        return;
+      }
+    }
+    if (['presensi', 'rekap', 'dashboard', 'anggota', 'pengaturan'].includes(hash)) {
+      activateTab(hash);
+    }
+  });
+
   // Routing awal berdasarkan Hash URL (misal scan QR code langsung ke #presensi)
   const initialHash = window.location.hash.replace('#', '').trim();
-  const validTabs = ['presensi', 'rekap', 'dashboard', 'anggota', 'pengaturan'];
+  const validTabs = isMemberOnlyMode ? ['presensi', 'rekap', 'dashboard'] : ['presensi', 'rekap', 'dashboard', 'anggota', 'pengaturan'];
   if (initialHash && validTabs.includes(initialHash)) {
     activateTab(initialHash);
   } else {
     activateTab('presensi');
+  }
+
+  // Jika diakses via link admin (?portal=admin), buka modal PIN admin langsung
+  if ((portalParam === 'admin' || roleParam === 'admin') && !adminUnlocked) {
+    setTimeout(() => {
+      pendingAdminTab = 'anggota';
+      openAdminModal();
+    }, 300);
   }
 
   // Update NTA & render awal

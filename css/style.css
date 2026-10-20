@@ -967,6 +967,56 @@ footer.app-footer {
   line-height: 1.4;
 }
 
+.badge-secure-notice {
+  display: inline-block;
+  background: #e2f4ea;
+  color: #12633c;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  border: 1px solid #b7dfca;
+}
+
+.badge-admin-notice {
+  display: inline-block;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid #fde68a;
+}
+
+.url-display-box {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.73rem;
+  color: var(--ink-muted);
+  background: #f8faf9;
+  border: 1px dashed var(--border-line);
+  padding: 6px 10px;
+  border-radius: 4px;
+  margin-top: 8px;
+  word-break: break-all;
+  user-select: all;
+}
+
+.admin-link-card {
+  background: #fafaf7;
+  border: 1px solid #e5e5dc;
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  text-align: left;
+}
+
+.admin-link-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 /* Banner Sukses Presensi di Tab Rekap */
 .alert-success-redirect {
   background: #ecfdf5;

@@ -190,7 +190,7 @@
                 <th>Unit</th>
                 <th>Keterangan / Aktivitas</th>
                 <th>Foto Selfie</th>
-                <th>Aksi</th>
+                <th class="admin-only-col" id="attActionHeader">Aksi</th>
               </tr>
             </thead>
             <tbody id="attendanceTableBody">
@@ -843,19 +843,23 @@ function jsonResponse(obj) {
         </pre>
       </div>
     </div>
+  </div>
+
   <!-- ========================================================================
-       MODAL: QR CODE PRESENSI SANGGAR (UNTUK DITEMPEL DI SANGGAR)
+       MODAL: QR CODE PRESENSI SANGGAR & AKSES ADMIN
        ======================================================================== -->
   <div class="modal-backdrop" id="qrModal">
-    <div class="modal-dialog" style="max-width: 440px;">
+    <div class="modal-dialog" style="max-width: 480px;">
       <div class="modal-header">
-        <h3 class="modal-title">QR Code Presensi Sanggar</h3>
+        <h3 class="modal-title">Distribusi Akses &amp; QR Code</h3>
         <button type="button" class="modal-close-btn" id="closeQrModalBtn">&times;</button>
       </div>
-      <div class="modal-body">
-        <div class="qr-poster-card" id="qrPosterPrintArea">
+      <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+        <!-- BAGIAN 1: QR CODE & POSTER PRESENSI ANGGOTA -->
+        <div class="qr-poster-card" id="qrPosterPrintArea" style="margin-bottom: 0;">
           <div class="qr-poster-header">
-            <img src="/assets/logo.png" alt="DKC Cilacap" style="width: 54px; height: 54px; margin-bottom: 6px; object-fit: contain;">
+            <div class="badge-secure-notice">🔒 Mode Anggota Terisolasi: Menu Admin Otomatis Terkunci</div><br>
+            <img src="/assets/logo.png" alt="DKC Cilacap" style="width: 52px; height: 52px; margin-bottom: 6px; object-fit: contain;">
             <div class="qr-poster-title">PRESENSI SANGGAR BAKTI</div>
             <div class="qr-poster-sub">DEWAN KERJA CABANG CILACAP</div>
           </div>
@@ -863,14 +867,30 @@ function jsonResponse(obj) {
             <img id="qrCodeImg" src="" alt="QR Code Presensi Sanggar">
           </div>
           <p class="qr-poster-instruksi">
-            Pindai QR Code ini menggunakan kamera HP untuk langsung membuka form presensi sanggar.
+            Pindai QR Code ini menggunakan kamera HP untuk langsung membuka form presensi sanggar.<br>
+            <small style="color: var(--ink-muted); font-size: 0.74rem;">(Aman: Menu Data Anggota &amp; Pengaturan terkunci total sehingga tidak dapat dibuka oleh anggota)</small>
           </p>
-          <div style="font-size: 0.72rem; color: var(--ink-muted); margin-top: 8px; word-break: break-all;" id="qrTargetUrlText"></div>
+          <div class="url-display-box" id="qrTargetUrlText"></div>
+          <div class="modal-action-row" style="margin-top: 12px; display: flex; gap: 8px; justify-content: center;">
+            <button type="button" class="btn btn-secondary btn-sm" id="copyQrLinkBtn">📋 Salin Link Anggota</button>
+            <button type="button" class="btn btn-primary btn-sm" id="printQrBtn">🖨️ Cetak Poster QR</button>
+          </div>
         </div>
-      </div>
-      <div class="modal-footer" style="justify-content: space-between;">
-        <button type="button" class="btn btn-secondary btn-sm" id="copyQrLinkBtn">Salin Link Presensi</button>
-        <button type="button" class="btn btn-primary btn-sm" id="printQrBtn">Cetak Poster QR</button>
+
+        <!-- BAGIAN 2: LINK KHUSUS PENGURUS & ADMIN -->
+        <div class="admin-link-card">
+          <div class="admin-link-header">
+            <span class="badge-admin-notice">🔐 Link Khusus Administrator &amp; Pengurus</span>
+          </div>
+          <p style="font-size: 0.78rem; color: var(--ink-secondary); margin: 6px 0 10px 0; line-height: 1.4;">
+            Gunakan link terpisah ini <b>khusus pengurus DKC</b> untuk mengelola data anggota, melihat spreadsheet Google Sheets, dan mengatur sistem (memerlukan PIN 1101).
+          </p>
+          <div class="url-display-box" id="adminPortalUrlText"></div>
+          <div class="modal-action-row" style="margin-top: 10px; display: flex; gap: 8px;">
+            <button type="button" class="btn btn-secondary btn-sm" id="copyAdminLinkBtn" style="flex: 1;">🔑 Salin Link Admin</button>
+            <button type="button" class="btn btn-primary btn-sm" id="openAdminPortalBtn" style="flex: 1;">🚀 Buka Akses Admin</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -888,6 +908,11 @@ function jsonResponse(obj) {
       </div>
       <div>
         Kwartir Cabang Gerakan Pramuka Cilacap
+      </div>
+      <div id="adminFooterAction">
+        <button type="button" id="btnAdminAccessToggle" style="background: none; border: 0; color: #8da496; font-size: 0.75rem; cursor: pointer; text-decoration: underline;">
+          🔐 Akses Administrator
+        </button>
       </div>
     </div>
   </footer>
