@@ -3,18 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>BANGKIT WIJAYAKUSUMA | Sistem Presensi & Keanggotaan DKC Cilacap</title>
-  <meta name="description" content="Sistem Informasi Keanggotaan dan Presensi Sanggar Bhakti Dewan Kerja Cabang Cilacap secara Real-Time terintegrasi Google Sheets.">
-  <meta name="theme-color" content="#064e3b">
+  <title>BANGKIT WIJAYAKUSUMA | Sistem DKC Cilacap</title>
+  <meta name="description" content="Sistem Informasi Keanggotaan dan Presensi Sanggar Bakti Dewan Kerja Cabang Cilacap secara Real-Time terintegrasi Google Sheets.">
+  <meta name="theme-color" content="#0f3d27">
   
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/assets/logo.png">
   <link rel="apple-touch-icon" href="/assets/logo.png">
-
-  <!-- Google Fonts: Plus Jakarta Sans -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="/css/style.css">
@@ -22,7 +17,7 @@
 <body>
 
   <!-- ========================================================================
-       MAIN HEADER & BRANDING
+       HEADER RESMI
        ======================================================================== -->
   <header class="main-header">
     <div class="header-container">
@@ -32,28 +27,22 @@
             <img src="/assets/logo.png" alt="Logo DKC Cilacap" class="brand-logo-img">
           </div>
           <div class="brand-meta">
-            <span class="brand-badge">
-              <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              GERAKAN PRAMUKA KWARTIR CABANG CILACAP
-            </span>
+            <span class="brand-badge">GERAKAN PRAMUKA KWARTIR CABANG CILACAP</span>
             <h1 class="brand-title">BANGKIT <span>WIJAYAKUSUMA</span></h1>
-            <p class="brand-subtitle">Sistem Keanggotaan & Presensi Sanggar Bakti DKC Cilacap</p>
+            <p class="brand-subtitle">Sistem Keanggotaan & Presensi Sanggar Bakti Dewan Kerja Cabang</p>
           </div>
         </a>
 
         <div class="header-actions">
-          <div class="live-clock-badge">
-            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            <span id="liveClock">Memuat waktu...</span>
-          </div>
+          <div class="live-clock-badge" id="liveClock">Memuat waktu...</div>
 
-          <div class="sync-status-indicator" id="headerStatusBadge" title="Status Sinkronisasi Google Sheets">
+          <div class="sync-status-indicator" id="headerStatusBadge">
             <span class="status-dot" id="headerStatusDot"></span>
             <span id="headerStatusText">Memeriksa database...</span>
           </div>
 
           <button class="btn-header-sync" id="btnHeaderSync" title="Klik untuk sinkronisasi data dengan Google Sheets">
-            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
             <span>Sinkronkan</span>
           </button>
         </div>
@@ -62,35 +51,20 @@
   </header>
 
   <!-- ========================================================================
-       NAVIGATION TABS
+       NAVIGASI TAB
        ======================================================================== -->
   <div class="nav-container">
     <nav class="nav-tabs" aria-label="Navigasi Menu">
-      <button class="tab-btn active" data-tab="presensi">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-        Presensi Kehadiran
-      </button>
-      <button class="tab-btn" data-tab="rekap">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-        Rekap & Peringkat
-      </button>
-      <button class="tab-btn" data-tab="dashboard">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-        Ringkasan & Dashboard
-      </button>
-      <button class="tab-btn" data-tab="anggota" data-protected="true">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-        Data Anggota <span class="tab-badge-lock">🔒 Admin</span>
-      </button>
-      <button class="tab-btn" data-tab="pengaturan" data-protected="true">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        Database & Sheets <span class="tab-badge-lock">🔒 Admin</span>
-      </button>
+      <button class="tab-btn active" data-tab="presensi">Presensi Kehadiran</button>
+      <button class="tab-btn" data-tab="rekap">Rekap & Peringkat</button>
+      <button class="tab-btn" data-tab="dashboard">Ringkasan</button>
+      <button class="tab-btn" data-tab="anggota" data-protected="true">🔒 Data Anggota</button>
+      <button class="tab-btn" data-tab="pengaturan" data-protected="true">🔒 Pengaturan & Database</button>
     </nav>
   </div>
 
   <!-- ========================================================================
-       MAIN APP PANELS
+       PANEL KONTEN
        ======================================================================== -->
   <main class="app-main">
 
@@ -101,13 +75,8 @@
       <div class="card">
         <div class="card-header">
           <div class="card-title-group">
-            <div class="card-icon-badge">
-              <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-            </div>
-            <div>
-              <h2 class="card-title">Catat Presensi Sanggar Bhakti</h2>
-              <p class="card-subtitle">Pilih anggota dan ambil foto selfie kehadiran. Presensi otomatis tersinkron ke Google Sheets.</p>
-            </div>
+            <h2 class="card-title">Catat Presensi Sanggar</h2>
+            <p class="card-subtitle">Pilih anggota dan ambil foto selfie kehadiran. Presensi otomatis tersimpan dan tersinkron ke Google Sheets.</p>
           </div>
         </div>
 
@@ -119,7 +88,7 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="attUnitFilter">Filter Unit Organisasi</label>
+              <label class="form-label" for="attUnitFilter">Saring per Unit Organisasi</label>
               <select id="attUnitFilter" class="form-control">
                 <option value="">Semua Unit Organisasi</option>
                 <option value="DKC">DKC Cilacap</option>
@@ -132,28 +101,26 @@
             </div>
 
             <div class="form-group full">
-              <label class="form-label" for="attNta">Pilih NTA & Nama Anggota <span class="req">*</span></label>
+              <label class="form-label" for="attNta">NTA & Nama Anggota <span class="req">*</span></label>
               <select id="attNta" class="form-control" required>
                 <option value="">-- Pilih NTA & Nama Anggota --</option>
               </select>
-              <span class="form-hint">Hanya anggota berstatus "Aktif Tugas" yang ditampilkan dalam pilihan presensi.</span>
             </div>
 
             <div class="form-group full">
               <label class="form-label" for="attActivity">Keterangan Aktivitas / Agenda Kegiatan <span class="req">*</span></label>
-              <input type="text" id="attActivity" class="form-control" placeholder="Contoh: Rapat koordinasi sanggar, piket giat, persiapan raimuna" required>
+              <input type="text" id="attActivity" class="form-control" placeholder="Contoh: Rapat rutin sanggar, persiapan kegiatan kwarcab, piket" required>
               <div class="quick-tags">
-                <span style="font-size: 0.75rem; color: var(--text-muted); align-self: center;">Pilihan cepat:</span>
+                <span style="font-size: 0.75rem; color: var(--ink-muted); align-self: center;">Pilihan cepat:</span>
                 <button type="button" class="tag-btn" data-tag="Rapat Rutin Sanggar">Rapat Rutin Sanggar</button>
                 <button type="button" class="tag-btn" data-tag="Piket Harian Sanggar">Piket Harian Sanggar</button>
                 <button type="button" class="tag-btn" data-tag="Persiapan Kegiatan Kwarcab">Persiapan Kegiatan Kwarcab</button>
-                <button type="button" class="tag-btn" data-tag="Apel & Upacara Resmi">Apel & Upacara Resmi</button>
+                <button type="button" class="tag-btn" data-tag="Apel & Upacara">Apel & Upacara</button>
                 <button type="button" class="tag-btn" data-tag="Koordinasi Bidang">Koordinasi Bidang</button>
-                <button type="button" class="tag-btn" data-tag="Aksi Bantuan Bencana">Aksi Bantuan Bencana</button>
               </div>
             </div>
 
-            <!-- Kamera & Selfie Live Component -->
+            <!-- Kamera Selfie -->
             <div class="form-group full">
               <label class="form-label">Foto Selfie Kehadiran <span class="req">*</span></label>
               
@@ -163,72 +130,39 @@
                   <img id="selfiePreview" class="selfie-preview-img" alt="Pratinjau Foto Selfie" style="display: none;">
                   
                   <div class="camera-overlay-frame" id="cameraPlaceholder">
-                    <span class="camera-overlay-text">Kamera Sanggar DKC Cilacap</span>
-                    <div style="text-align: center; color: rgba(255,255,255,0.7); font-size: 0.85rem;">
-                      Klik tombol <b>"Nyalakan Kamera"</b> untuk selfie langsung<br>atau pilih foto dari galeri HP Anda.
-                    </div>
-                    <span class="camera-overlay-text">Presensi Terverifikasi</span>
+                    <span class="camera-overlay-text">Kamera Presensi Sanggar</span>
+                    <div>Nyalakan kamera untuk selfie langsung atau unggah foto dari perangkat.</div>
                   </div>
                 </div>
 
                 <div class="camera-controls">
-                  <button type="button" class="btn-camera-util" id="startCameraBtn">
-                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                    Nyalakan Kamera
-                  </button>
-
-                  <button type="button" class="btn-camera-util" id="switchCameraBtn">
-                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                    Putar Kamera
-                  </button>
-
-                  <button type="button" class="btn-capture" id="captureBtn">
-                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                    Ambil Foto
-                  </button>
-
-                  <button type="button" class="btn-camera-util" id="retakeBtn">
-                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                    Foto Ulang
-                  </button>
-
-                  <label class="btn-camera-util" for="uploadPhotoInput" style="cursor: pointer;">
-                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-                    Pilih dari Galeri
-                  </label>
+                  <button type="button" class="btn-camera-util" id="startCameraBtn">Nyalakan Kamera</button>
+                  <button type="button" class="btn-camera-util" id="switchCameraBtn">Putar Kamera</button>
+                  <button type="button" class="btn-capture" id="captureBtn">Ambil Foto</button>
+                  <button type="button" class="btn-camera-util" id="retakeBtn">Foto Ulang</button>
+                  <label class="btn-camera-util" for="uploadPhotoInput" style="cursor: pointer;">Pilih dari Galeri</label>
                   <input type="file" id="uploadPhotoInput" accept="image/*" capture="user" hidden>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="btn-group" style="margin-top: 24px;">
-            <button type="submit" class="btn btn-primary" id="btnSubmitAttendance">
-              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-              Simpan Presensi Kehadiran
-            </button>
+          <div class="btn-group" style="margin-top: 18px;">
+            <button type="submit" class="btn btn-primary" id="btnSubmitAttendance">Simpan Presensi</button>
             <button type="reset" class="btn btn-secondary">Kosongkan Form</button>
           </div>
         </form>
       </div>
 
-      <!-- Riwayat Presensi Real-Time -->
+      <!-- Riwayat Presensi -->
       <div class="card">
         <div class="card-header">
           <div class="card-title-group">
-            <div class="card-icon-badge gold">
-              <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            </div>
-            <div>
-              <h2 class="card-title">Riwayat Presensi Real-Time</h2>
-              <p class="card-subtitle">Daftar kehadiran anggota sanggar yang tercatat di database.</p>
-            </div>
+            <h2 class="card-title">Riwayat Presensi</h2>
+            <p class="card-subtitle">Daftar kehadiran anggota sanggar yang tercatat di database.</p>
           </div>
 
-          <button class="btn btn-secondary btn-sm" id="exportAttendance">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-            Ekspor CSV
-          </button>
+          <button class="btn btn-secondary btn-sm" id="exportAttendance">Ekspor CSV</button>
         </div>
 
         <div class="table-toolbar">
@@ -264,34 +198,26 @@
     </section>
 
     <!-- ----------------------------------------------------------------------
-         PANEL 2: REKAP & PERINGKAT KEHADIRAN (LEADERBOARD)
+         PANEL 2: REKAP & PERINGKAT KEHADIRAN
          ---------------------------------------------------------------------- -->
     <section id="rekap" class="panel">
       <div class="card">
         <div class="card-header">
           <div class="card-title-group">
-            <div class="card-icon-badge gold">
-              <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-            </div>
-            <div>
-              <h2 class="card-title">Rekap Kehadiran Bulanan</h2>
-              <p class="card-subtitle">Peringkat dan akumulasi kehadiran anggota berdasarkan bulan pilihan.</p>
-            </div>
+            <h2 class="card-title">Rekap Kehadiran Bulanan</h2>
+            <p class="card-subtitle">Peringkat dan akumulasi kehadiran anggota berdasarkan bulan pilihan.</p>
           </div>
 
-          <button class="btn btn-secondary btn-sm" id="exportReport">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-            Ekspor Rekap CSV
-          </button>
+          <button class="btn btn-secondary btn-sm" id="exportReport">Ekspor Rekap CSV</button>
         </div>
 
         <div class="table-toolbar">
           <div class="form-group">
-            <label class="form-label" for="reportMonth">Pilih Bulan Rekap</label>
+            <label class="form-label" for="reportMonth">Pilih Bulan</label>
             <input type="month" id="reportMonth" class="form-control">
           </div>
           <div class="form-group">
-            <label class="form-label" for="reportUnit">Filter Unit</label>
+            <label class="form-label" for="reportUnit">Unit Organisasi</label>
             <select id="reportUnit" class="form-control">
               <option value="">Semua Unit Organisasi</option>
               <option value="DKC">DKC Cilacap</option>
@@ -304,13 +230,13 @@
           </div>
         </div>
 
-        <p id="reportCaption" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px; font-weight: 700;"></p>
+        <p id="reportCaption" style="font-size: 0.82rem; color: var(--ink-muted); margin-bottom: 12px; font-weight: 700;"></p>
 
         <div class="table-responsive">
           <table class="data-table">
             <thead>
               <tr>
-                <th style="width: 70px;">Rank</th>
+                <th style="width: 50px;">No</th>
                 <th>NTA</th>
                 <th>Nama Anggota</th>
                 <th>Unit</th>
@@ -329,13 +255,8 @@
       <div class="card">
         <div class="card-header">
           <div class="card-title-group">
-            <div class="card-icon-badge">
-              <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            </div>
-            <div>
-              <h2 class="card-title">Peringkat Kehadiran Sepanjang Waktu (All-Time)</h2>
-              <p class="card-subtitle">Akumulasi total kehadiran anggota sejak awal sistem digunakan.</p>
-            </div>
+            <h2 class="card-title">Peringkat Kehadiran Sepanjang Waktu</h2>
+            <p class="card-subtitle">Akumulasi total kehadiran anggota sejak awal penggunaan sistem.</p>
           </div>
         </div>
 
@@ -343,7 +264,7 @@
           <table class="data-table">
             <thead>
               <tr>
-                <th style="width: 70px;">Rank</th>
+                <th style="width: 50px;">No</th>
                 <th>NTA</th>
                 <th>Nama Anggota</th>
                 <th>Unit</th>
@@ -362,22 +283,15 @@
          PANEL 3: RINGKASAN & DASHBOARD
          ---------------------------------------------------------------------- -->
     <section id="dashboard" class="panel">
-      <!-- Metrik Cards -->
       <div class="stats-grid" id="statsGrid">
         <!-- Rendered via JS -->
       </div>
 
-      <!-- Ringkasan Unit -->
       <div class="card">
         <div class="card-header">
           <div class="card-title-group">
-            <div class="card-icon-badge">
-              <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-            </div>
-            <div>
-              <h2 class="card-title">Distribusi Anggota per Unit Organisasi</h2>
-              <p class="card-subtitle">Statistik jumlah anggota dan kuota unit di lingkungan DKC Cilacap.</p>
-            </div>
+            <h2 class="card-title">Ringkasan Anggota per Unit</h2>
+            <p class="card-subtitle">Distribusi jumlah anggota dan keaktifan di masing-masing unit kerja.</p>
           </div>
         </div>
 
@@ -399,17 +313,11 @@
         </div>
       </div>
 
-      <!-- Presensi Terbaru -->
       <div class="card">
         <div class="card-header">
           <div class="card-title-group">
-            <div class="card-icon-badge gold">
-              <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            </div>
-            <div>
-              <h2 class="card-title">Presensi Terbaru</h2>
-              <p class="card-subtitle">Anggota yang baru saja melakukan presensi kehadiran di sanggar.</p>
-            </div>
+            <h2 class="card-title">Presensi Terbaru</h2>
+            <p class="card-subtitle">Daftar presensi yang baru saja tercatat.</p>
           </div>
         </div>
 
@@ -437,17 +345,11 @@
          PANEL 4: DATA ANGGOTA (ADMIN PROTECTED)
          ---------------------------------------------------------------------- -->
     <section id="anggota" class="panel">
-      <!-- Form Input Anggota -->
       <div class="card">
         <div class="card-header">
           <div class="card-title-group">
-            <div class="card-icon-badge">
-              <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
-            </div>
-            <div>
-              <h2 class="card-title" id="memberFormTitle">Input Data Anggota Baru</h2>
-              <p class="card-subtitle">Nomor Tanda Anggota (NTA) dihitung otomatis sesuai format dan aturan kuota masing-masing unit.</p>
-            </div>
+            <h2 class="card-title" id="memberFormTitle">Input Data Anggota</h2>
+            <p class="card-subtitle">Nomor Tanda Anggota (NTA) dibuat otomatis berdasarkan unit. Kuota DKC dibatasi maksimal 21 anggota (W01–W21).</p>
           </div>
         </div>
 
@@ -485,12 +387,12 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="pangkalan">Pangkalan / Sekolah / Gudep <span class="req">*</span></label>
-              <input type="text" id="pangkalan" class="form-control" placeholder="Contoh: SMA N 1 Cilacap / Sanggar Kwarcab" required>
+              <label class="form-label" for="pangkalan">Pangkalan / Sekolah <span class="req">*</span></label>
+              <input type="text" id="pangkalan" class="form-control" placeholder="Nama sekolah / pangkalan gugusdepan" required>
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="jabatan">Jabatan di Unit</label>
+              <label class="form-label" for="jabatan">Jabatan</label>
               <input type="text" id="jabatan" class="form-control" placeholder="Contoh: Ketua, Anggota, Sie Giat">
             </div>
 
@@ -509,15 +411,12 @@
 
             <div class="form-group full">
               <label class="form-label" for="catatan">Catatan Tambahan (Opsional)</label>
-              <textarea id="catatan" class="form-control" placeholder="Catatan bidang tugas, keahlian, atau nomor kontak darurat"></textarea>
+              <textarea id="catatan" class="form-control" placeholder="Catatan bidang tugas, keahlian, dll."></textarea>
             </div>
           </div>
 
-          <div class="btn-group" style="margin-top: 24px;">
-            <button type="submit" class="btn btn-primary">
-              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-              Simpan Data Anggota
-            </button>
+          <div class="btn-group" style="margin-top: 18px;">
+            <button type="submit" class="btn btn-primary">Simpan Data Anggota</button>
             <button type="button" class="btn btn-secondary" id="cancelEdit" style="display: none;">Batal Edit</button>
             <button type="reset" class="btn btn-secondary">Kosongkan Form</button>
           </div>
@@ -528,25 +427,17 @@
       <div class="card">
         <div class="card-header">
           <div class="card-title-group">
-            <div class="card-icon-badge">
-              <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
-            </div>
-            <div>
-              <h2 class="card-title">Direktori Anggota Terdaftar</h2>
-              <p class="card-subtitle">Kelola dan pantau seluruh anggota DKC dan unit-unit binaan.</p>
-            </div>
+            <h2 class="card-title">Daftar Anggota</h2>
+            <p class="card-subtitle">Daftar seluruh anggota DKC Cilacap dan unit kerja binaan.</p>
           </div>
 
-          <button class="btn btn-secondary btn-sm" id="exportMembers">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-            Ekspor CSV
-          </button>
+          <button class="btn btn-secondary btn-sm" id="exportMembers">Ekspor CSV</button>
         </div>
 
         <div class="table-toolbar">
           <div class="form-group" style="flex: 2;">
             <label class="form-label" for="memberSearch">Cari Anggota</label>
-            <input type="text" id="memberSearch" class="form-control" placeholder="Cari nama, NTA, pangkalan, atau kontak...">
+            <input type="text" id="memberSearch" class="form-control" placeholder="Cari nama, NTA, pangkalan...">
           </div>
           <div class="form-group">
             <label class="form-label" for="filterUnit">Filter Unit</label>
@@ -600,56 +491,39 @@
       <div class="card">
         <div class="card-header">
           <div class="card-title-group">
-            <div class="card-icon-badge gold">
-              <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
-            </div>
-            <div>
-              <h2 class="card-title">Integrasi Database Google Sheets (Real-Time)</h2>
-              <p class="card-subtitle">Hubungkan sistem presensi ini ke Google Spreadsheet Anda secara langsung tanpa biaya server.</p>
-            </div>
+            <h2 class="card-title">Integrasi Database Google Sheets</h2>
+            <p class="card-subtitle">Hubungkan sistem ini ke Google Spreadsheet secara real-time melalui Google Apps Script.</p>
           </div>
 
-          <button class="btn btn-secondary btn-sm" id="openSetupGuideBtn">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-            Petunjuk Setup & Copy Kode Apps Script
-          </button>
+          <button class="btn btn-secondary btn-sm" id="openSetupGuideBtn">Petunjuk Setup Apps Script</button>
         </div>
 
         <div class="alert alert-info">
-          <svg class="alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          <div>
-            <b>Status Sinkronisasi Saat Ini:</b> <span id="sheetsStatusDetail">Memeriksa status...</span><br>
-            <span id="lastSyncLabel" style="font-size: 0.8rem; opacity: 0.9;"></span>
-          </div>
+          <b>Status Sinkronisasi:</b> <span id="sheetsStatusDetail">Memeriksa status...</span><br>
+          <span id="lastSyncLabel" style="font-size: 0.78rem; opacity: 0.9;"></span>
         </div>
 
         <div class="form-grid">
           <div class="form-group full">
             <label class="form-label" for="sheetsUrlInput">URL Web App Google Apps Script</label>
             <input type="url" id="sheetsUrlInput" class="form-control" placeholder="https://script.google.com/macros/s/.../exec">
-            <span class="form-hint">Dapatkan URL ini setelah menerapkan (deploy) kode Google Apps Script di Spreadsheet Anda sebagai Web App ("Anyone").</span>
+            <span class="form-hint">Dapatkan URL ini setelah menerapkan kode Google Apps Script di Spreadsheet sebagai Web App (akses: "Anyone").</span>
           </div>
 
           <div class="form-group">
             <label class="form-label" for="autoSyncSelect">Interval Sinkronisasi Otomatis</label>
             <select id="autoSyncSelect" class="form-control">
-              <option value="15">Setiap 15 Detik (Real-Time Cepat)</option>
-              <option value="30">Setiap 30 Detik (Direkomendasikan)</option>
+              <option value="15">Setiap 15 Detik (Real-Time)</option>
+              <option value="30">Setiap 30 Detik</option>
               <option value="60">Setiap 1 Menit</option>
-              <option value="0">Manual Saja (Hemat Kuota)</option>
+              <option value="0">Manual Saja</option>
             </select>
           </div>
         </div>
 
-        <div class="btn-group" style="margin-top: 20px;">
-          <button type="button" class="btn btn-primary" id="saveSheetsConfigBtn">
-            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-            Simpan & Hubungkan
-          </button>
-          <button type="button" class="btn btn-secondary" id="testSheetsBtn">
-            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-            Uji Ping Koneksi
-          </button>
+        <div class="btn-group" style="margin-top: 16px;">
+          <button type="button" class="btn btn-primary" id="saveSheetsConfigBtn">Simpan & Hubungkan</button>
+          <button type="button" class="btn btn-secondary" id="testSheetsBtn">Uji Ping Koneksi</button>
         </div>
       </div>
 
@@ -657,13 +531,8 @@
       <div class="card">
         <div class="card-header">
           <div class="card-title-group">
-            <div class="card-icon-badge">
-              <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-            </div>
-            <div>
-              <h2 class="card-title">Standar Format Nomor Tanda Anggota (NTA)</h2>
-              <p class="card-subtitle">Aturan penomoran resmi untuk masing-masing unit kerja.</p>
-            </div>
+            <h2 class="card-title">Standar Format Nomor Tanda Anggota (NTA)</h2>
+            <p class="card-subtitle">Aturan resmi penomoran anggota masing-masing unit kerja.</p>
           </div>
         </div>
 
@@ -679,33 +548,33 @@
             <tbody>
               <tr>
                 <td><b>DKC Cilacap</b></td>
-                <td><b style="color: var(--primary-700)">W01 – W21</b></td>
+                <td><b style="color: var(--green-primary)">W01 – W21</b></td>
                 <td>Dibatasi maksimal 21 anggota Dewan Kerja Cabang.</td>
               </tr>
               <tr>
                 <td><b>UBALOKA</b></td>
                 <td><b>U.01, U.02, ...</b></td>
-                <td>Penomoran berurutan otomatis untuk korps relawan tanggap bencana.</td>
+                <td>Penomoran berurutan otomatis.</td>
               </tr>
               <tr>
                 <td><b>UNPASA</b></td>
                 <td><b>11.01.UA.001, ...</b></td>
-                <td>Unit Protokol Kwarcab Cilacap (3 digit berurutan).</td>
+                <td>Unit Protokol Kwarcab Cilacap (3 digit).</td>
               </tr>
               <tr>
                 <td><b>CYBER JURNALIST</b></td>
                 <td><b>11.01.CJ.001, ...</b></td>
-                <td>Unit Pewarta & Publikasi Pramuka (3 digit berurutan).</td>
+                <td>Unit Pewarta & Publikasi Pramuka (3 digit).</td>
               </tr>
               <tr>
                 <td><b>PASPANCA</b></td>
                 <td><b>11.01.P.001, ...</b></td>
-                <td>Pasukan Pengibar Bendera Kwarcab Cilacap (3 digit berurutan).</td>
+                <td>Pasukan Pengibar Bendera Kwarcab Cilacap (3 digit).</td>
               </tr>
               <tr>
                 <td><b>UNPRADA</b></td>
                 <td><b>11.01.UP.001, ...</b></td>
-                <td>Unit Pramuka Peduli (3 digit berurutan).</td>
+                <td>Unit Pramuka Peduli (3 digit).</td>
               </tr>
             </tbody>
           </table>
@@ -716,52 +585,30 @@
       <div class="card">
         <div class="card-header">
           <div class="card-title-group">
-            <div class="card-icon-badge">
-              <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-            </div>
-            <div>
-              <h2 class="card-title">Keamanan Akses Administrator</h2>
-              <p class="card-subtitle">Password default sistem ini adalah <code>1101</code>. Anda dapat mengubahnya sewaktu-waktu.</p>
-            </div>
+            <h2 class="card-title">Keamanan Akses Administrator</h2>
+            <p class="card-subtitle">Password default sistem ini adalah <code>1101</code>.</p>
           </div>
         </div>
 
-        <button type="button" class="btn btn-secondary" id="changePinBtn">
-          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
-          Ubah Password Admin
-        </button>
+        <button type="button" class="btn btn-secondary" id="changePinBtn">Ubah Password Admin</button>
       </div>
 
       <!-- Backup & Pemulihan -->
       <div class="card">
         <div class="card-header">
           <div class="card-title-group">
-            <div class="card-icon-badge">
-              <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7C5 4 4 5 4 7z"/></svg>
-            </div>
-            <div>
-              <h2 class="card-title">Backup & Pemulihan Data Offline</h2>
-              <p class="card-subtitle">Simpan salinan database ke file JSON untuk cadangan atau memindahkan ke perangkat lain.</p>
-            </div>
+            <h2 class="card-title">Backup & Pemulihan Data Offline</h2>
+            <p class="card-subtitle">Simpan salinan database ke file JSON untuk cadangan atau memindahkan data.</p>
           </div>
         </div>
 
         <div class="btn-group">
-          <button type="button" class="btn btn-primary" id="backupBtn">
-            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-            Unduh Backup JSON
-          </button>
+          <button type="button" class="btn btn-primary" id="backupBtn">Unduh Backup JSON</button>
 
-          <label class="btn btn-secondary" for="restoreFile" style="cursor: pointer;">
-            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-            Pulihkan dari File JSON
-          </label>
+          <label class="btn btn-secondary" for="restoreFile" style="cursor: pointer;">Pulihkan dari File JSON</label>
           <input type="file" id="restoreFile" accept=".json,application/json" hidden>
 
-          <button type="button" class="btn btn-danger" id="clearAllBtn">
-            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-            Kosongkan Database
-          </button>
+          <button type="button" class="btn btn-danger" id="clearAllBtn">Kosongkan Database</button>
         </div>
       </div>
     </section>
@@ -772,24 +619,24 @@
        MODAL: ADMIN ACCESS PIN
        ======================================================================== -->
   <div class="modal-backdrop" id="passwordModal">
-    <div class="modal-dialog" id="passwordDialog" style="max-width: 420px;">
+    <div class="modal-dialog" id="passwordDialog" style="max-width: 400px;">
       <div class="modal-header">
         <h3 class="modal-title">Akses Administrator</h3>
         <button type="button" class="modal-close-btn" id="cancelPasswordBtn">&times;</button>
       </div>
       <form id="passwordForm">
         <div class="modal-body">
-          <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px;">
-            Halaman ini dilindungi. Masukkan PIN / Password administrator untuk melanjutkan. (Default: <code>1101</code>)
+          <p style="font-size: 0.85rem; color: var(--ink-secondary); margin-bottom: 14px;">
+            Masukkan PIN administrator untuk membuka menu ini. (Default: <code>1101</code>)
           </p>
           <div class="form-group">
             <label class="form-label" for="adminPassword">Password Admin</label>
             <input type="password" id="adminPassword" class="form-control" placeholder="Masukkan PIN admin" autocomplete="current-password" required>
-            <div id="passwordError" style="color: var(--red-600); font-size: 0.82rem; margin-top: 6px; font-weight: 700;"></div>
+            <div id="passwordError" style="color: var(--danger); font-size: 0.8rem; margin-top: 5px; font-weight: 700;"></div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary" style="width: auto;">Buka Kunci</button>
+          <button type="submit" class="btn btn-primary">Buka Kunci</button>
         </div>
       </form>
     </div>
@@ -799,20 +646,17 @@
        MODAL: LIGHTBOX SELFIE PREVIEW
        ======================================================================== -->
   <div class="modal-backdrop" id="selfieModal">
-    <div class="modal-dialog" style="max-width: 620px; text-align: center;">
+    <div class="modal-dialog" style="max-width: 580px; text-align: center;">
       <div class="modal-header">
         <h3 class="modal-title">Foto Selfie Kehadiran</h3>
         <button type="button" class="modal-close-btn" id="closeSelfieModalBtn">&times;</button>
       </div>
       <div class="modal-body">
-        <img id="selfieModalImg" src="" alt="Selfie" style="max-width: 100%; max-height: 60vh; border-radius: var(--radius-md); box-shadow: var(--shadow-md);">
-        <p id="selfieModalMeta" style="margin-top: 14px; font-size: 0.86rem; color: var(--text-muted); line-height: 1.4;"></p>
+        <img id="selfieModalImg" src="" alt="Selfie" style="max-width: 100%; max-height: 55vh; border-radius: var(--radius-sm); border: 1px solid var(--border-line);">
+        <p id="selfieModalMeta" style="margin-top: 12px; font-size: 0.82rem; color: var(--ink-secondary); line-height: 1.4;"></p>
       </div>
       <div class="modal-footer" style="justify-content: center;">
-        <button type="button" class="btn btn-primary btn-sm" id="downloadSelfieBtn">
-          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-          Unduh Foto
-        </button>
+        <button type="button" class="btn btn-primary btn-sm" id="downloadSelfieBtn">Unduh Foto</button>
       </div>
     </div>
   </div>
@@ -821,33 +665,30 @@
        MODAL: PANDUAN SETUP GOOGLE APPS SCRIPT
        ======================================================================== -->
   <div class="modal-backdrop" id="setupGuideModal">
-    <div class="modal-dialog" style="max-width: 760px;">
+    <div class="modal-dialog" style="max-width: 720px;">
       <div class="modal-header">
         <h3 class="modal-title">Panduan Setup Google Sheets (3 Menit)</h3>
         <button type="button" class="modal-close-btn" id="closeSetupGuideBtn">&times;</button>
       </div>
-      <div class="modal-body" style="font-size: 0.9rem; line-height: 1.6;">
-        <ol style="padding-left: 20px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px;">
-          <li>Buka <a href="https://sheets.google.com" target="_blank" rel="noopener" style="color: var(--primary-700); font-weight: 700;">Google Sheets</a> dan buat Spreadsheet baru (misal: <i>"Database Presensi DKC Cilacap"</i>).</li>
+      <div class="modal-body" style="font-size: 0.85rem; line-height: 1.6;">
+        <ol style="padding-left: 18px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px;">
+          <li>Buka <a href="https://sheets.google.com" target="_blank" rel="noopener" style="color: var(--green-primary); font-weight: 700;">Google Sheets</a> dan buat Spreadsheet baru (misal: <i>"Database Presensi DKC Cilacap"</i>).</li>
           <li>Klik menu <b>Ekstensi (Extensions)</b> &rarr; <b>Apps Script</b>.</li>
-          <li>Hapus kode bawaan di editor, lalu klik tombol hijau <b>"Salin Kode Script"</b> di bawah ini dan tempelkan.</li>
-          <li>Klik ikon <b>Simpan (Save)</b>.</li>
-          <li>Klik tombol biru <b>Terapkan (Deploy)</b> &rarr; <b>Penerapan baru (New deployment)</b>.</li>
+          <li>Hapus kode bawaan di editor, lalu klik tombol <b>"Salin Kode Script"</b> di bawah ini dan tempelkan.</li>
+          <li>Klik ikon <b>Simpan</b>.</li>
+          <li>Klik tombol <b>Terapkan (Deploy)</b> &rarr; <b>Penerapan baru (New deployment)</b>.</li>
           <li>Pilih jenis <b>Aplikasi Web (Web App)</b>.</li>
-          <li>Atur <i>Jalankan sebagai:</i> <b>Saya (Me)</b> dan <i>Siapa yang memiliki akses:</i> <b style="color: var(--red-600)">Siapa saja (Anyone)</b>.</li>
-          <li>Klik <b>Terapkan</b>, izinkan akses akun Google Anda, lalu salin <b>URL Aplikasi Web (Web App URL)</b>.</li>
-          <li>Tempelkan URL tersebut ke kolom pengaturan dan klik <b>Simpan & Hubungkan</b>. Selesai!</li>
+          <li>Atur <i>Jalankan sebagai:</i> <b>Saya (Me)</b> dan <i>Siapa yang memiliki akses:</i> <b style="color: var(--danger)">Siapa saja (Anyone)</b>.</li>
+          <li>Klik <b>Terapkan</b>, setujui izin akun Google, lalu salin <b>URL Aplikasi Web (Web App URL)</b>.</li>
+          <li>Tempelkan URL tersebut ke menu Pengaturan di aplikasi ini dan klik <b>Simpan & Hubungkan</b>.</li>
         </ol>
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <b style="font-size: 0.85rem; color: var(--slate-700);">Kode Google Apps Script:</b>
-          <button type="button" class="btn btn-primary btn-sm" id="copyScriptBtn">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
-            Salin Kode Script
-          </button>
+          <b style="font-size: 0.82rem; color: var(--ink);">Kode Google Apps Script:</b>
+          <button type="button" class="btn btn-primary btn-sm" id="copyScriptBtn">Salin Kode Script</button>
         </div>
 
-        <pre id="appsScriptCode" style="background: var(--slate-900); color: #a7f3d0; padding: 16px; border-radius: var(--radius-md); font-family: monospace; font-size: 0.78rem; max-height: 250px; overflow-y: auto; white-space: pre-wrap;">
+        <pre id="appsScriptCode" style="background: #17261e; color: #a4beaf; padding: 14px; border-radius: var(--radius-sm); font-family: monospace; font-size: 0.75rem; max-height: 220px; overflow-y: auto; white-space: pre-wrap;">
 const SHEET_MEMBERS = "Anggota";
 const SHEET_ATTENDANCE = "Presensi";
 
@@ -858,7 +699,7 @@ function initSheets() {
     sheetMembers = ss.insertSheet(SHEET_MEMBERS);
     const headers = ["ID", "NTA", "Nama", "Unit", "Status", "Pangkalan", "Jabatan", "Golongan", "Kontak", "Catatan", "Dibuat_Pada"];
     sheetMembers.appendRow(headers);
-    sheetMembers.getRange(1, 1, 1, headers.length).setFontWeight("bold").setBackground("#064e3b").setFontColor("#ffffff");
+    sheetMembers.getRange(1, 1, 1, headers.length).setFontWeight("bold").setBackground("#0f3d27").setFontColor("#ffffff");
     sheetMembers.setFrozenRows(1);
   }
   let sheetAtt = ss.getSheetByName(SHEET_ATTENDANCE);
@@ -866,7 +707,7 @@ function initSheets() {
     sheetAtt = ss.insertSheet(SHEET_ATTENDANCE);
     const headers = ["ID", "MemberId", "Tanggal", "NTA", "Nama", "Unit", "Aktivitas", "Selfie_URL", "Lokasi", "Waktu_Presensi"];
     sheetAtt.appendRow(headers);
-    sheetAtt.getRange(1, 1, 1, headers.length).setFontWeight("bold").setBackground("#064e3b").setFontColor("#ffffff");
+    sheetAtt.getRange(1, 1, 1, headers.length).setFontWeight("bold").setBackground("#0f3d27").setFontColor("#ffffff");
     sheetAtt.setFrozenRows(1);
   }
 }
@@ -1006,11 +847,10 @@ function jsonResponse(obj) {
   <footer class="app-footer">
     <div class="footer-content">
       <div class="footer-brand">
-        <img src="/assets/logo.png" alt="DKC" style="width: 24px; height: 24px; object-fit: contain;">
-        <span>BANGKIT WIJAYAKUSUMA · DKC Cilacap v2.0</span>
+        BANGKIT WIJAYAKUSUMA · Dewan Kerja Cabang Cilacap
       </div>
       <div>
-        Dewan Kerja Pramuka Penegak & Pandega Kwartir Cabang Cilacap
+        Kwartir Cabang Gerakan Pramuka Cilacap
       </div>
     </div>
   </footer>

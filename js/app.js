@@ -188,40 +188,20 @@ function renderDashboard() {
 
   $('statsGrid').innerHTML = `
     <div class="stat-box">
-      <div class="stat-icon">
-        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-      </div>
-      <div>
-        <div class="stat-label">Total Anggota</div>
-        <div class="stat-number">${metrics.totalMembers}</div>
-      </div>
+      <div class="stat-label">Total Anggota</div>
+      <div class="stat-number">${metrics.totalMembers}</div>
     </div>
     <div class="stat-box">
-      <div class="stat-icon">
-        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-      </div>
-      <div>
-        <div class="stat-label">Aktif Tugas</div>
-        <div class="stat-number">${metrics.activeMembers}</div>
-      </div>
+      <div class="stat-label">Aktif Tugas</div>
+      <div class="stat-number">${metrics.activeMembers}</div>
     </div>
     <div class="stat-box blue">
-      <div class="stat-icon">
-        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-      </div>
-      <div>
-        <div class="stat-label">Hadir Hari Ini</div>
-        <div class="stat-number">${metrics.todayAttendance}</div>
-      </div>
+      <div class="stat-label">Hadir Hari Ini</div>
+      <div class="stat-number">${metrics.todayAttendance}</div>
     </div>
     <div class="stat-box gold">
-      <div class="stat-icon">
-        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-      </div>
-      <div>
-        <div class="stat-label">Presensi Bulan Ini</div>
-        <div class="stat-number">${metrics.monthAttendance}</div>
-      </div>
+      <div class="stat-label">Presensi Bulan Ini</div>
+      <div class="stat-number">${metrics.monthAttendance}</div>
     </div>
   `;
 
@@ -243,7 +223,7 @@ function renderDashboard() {
   // Presensi Terbaru
   const recents = db.attendance.slice().sort((a, b) => (b.date + (b.time || '')).localeCompare(a.date + (a.time || ''))).slice(0, 8);
   if (recents.length === 0) {
-    $('recentAttendanceBody').innerHTML = `<tr><td colspan="6" class="text-center" style="padding: 24px; color: var(--text-muted)">Belum ada data presensi tercatat.</td></tr>`;
+    $('recentAttendanceBody').innerHTML = `<tr><td colspan="6" class="text-center" style="padding: 20px; color: var(--ink-muted)">Belum ada data presensi tercatat.</td></tr>`;
   } else {
     $('recentAttendanceBody').innerHTML = recents.map(a => {
       const m = db.members.find(x => x.id === a.memberId) || { nta: a.nta || '-', nama: a.nama || 'Anggota', unit: a.unit || '-' };
@@ -255,7 +235,7 @@ function renderDashboard() {
           <td><span class="badge badge-unit">${esc(m.unit)}</span></td>
           <td>${esc(a.activity)}</td>
           <td>
-            ${a.selfie ? `<button class="selfie-thumb-btn" onclick="window.viewSelfieModal('${a.id}')"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg> Lihat Foto</button>` : '-'}
+            ${a.selfie ? `<button class="selfie-thumb-btn" onclick="window.viewSelfieModal('${a.id}')">Lihat Foto</button>` : '-'}
           </td>
         </tr>
       `;
@@ -326,24 +306,24 @@ function renderReport() {
   $('reportCaption').textContent = `Periode: ${month || 'Semua Bulan'} · Unit: ${unit || 'Semua Unit'} (${monthlyRankings.length} Anggota)`;
 
   if (monthlyRankings.length === 0) {
-    $('reportTableBody').innerHTML = `<tr><td colspan="7" class="text-center" style="padding: 24px; color: var(--text-muted)">Belum ada data anggota pada filter ini.</td></tr>`;
+    $('reportTableBody').innerHTML = `<tr><td colspan="7" class="text-center" style="padding: 20px; color: var(--ink-muted)">Belum ada data anggota pada filter ini.</td></tr>`;
   } else {
     $('reportTableBody').innerHTML = monthlyRankings.map((m, index) => {
       const rank = index + 1;
-      let rankBadge = `<span class="rank-badge rank-normal">${rank}</span>`;
-      if (rank === 1 && m.attendanceCount > 0) rankBadge = `<span class="rank-badge rank-1" title="Juara 1">🥇</span>`;
-      if (rank === 2 && m.attendanceCount > 0) rankBadge = `<span class="rank-badge rank-2" title="Juara 2">🥈</span>`;
-      if (rank === 3 && m.attendanceCount > 0) rankBadge = `<span class="rank-badge rank-3" title="Juara 3">🥉</span>`;
+      let rankClass = 'rank-normal';
+      if (rank === 1 && m.attendanceCount > 0) rankClass = 'rank-1';
+      if (rank === 2 && m.attendanceCount > 0) rankClass = 'rank-2';
+      if (rank === 3 && m.attendanceCount > 0) rankClass = 'rank-3';
 
       return `
         <tr>
-          <td>${rankBadge}</td>
+          <td><b class="${rankClass}">${rank}</b></td>
           <td><b>${esc(m.nta)}</b></td>
           <td>${esc(m.nama)}</td>
           <td><span class="badge badge-unit">${esc(m.unit)}</span></td>
           <td><span class="badge ${m.status === 'Aktif Tugas' ? 'badge-success' : 'badge-neutral'}">${esc(m.status)}</span></td>
-          <td><b style="font-size: 1.05rem; color: var(--primary-700)">${m.attendanceCount}</b> kali</td>
-          <td><small style="color: var(--text-muted)">${esc(m.activities.join('; ') || '-')}</small></td>
+          <td><b>${m.attendanceCount}</b> kali</td>
+          <td><small style="color: var(--ink-secondary)">${esc(m.activities.join('; ') || '-')}</small></td>
         </tr>
       `;
     }).join('');
@@ -353,21 +333,21 @@ function renderReport() {
   const allTime = AnalyticsManager.getAllTimeRankings(db.members, db.attendance, unit);
   $('allTimeRankBody').innerHTML = allTime.map((m, index) => {
     const rank = index + 1;
-    let rankBadge = `<span class="rank-badge rank-normal">${rank}</span>`;
-    if (rank === 1 && m.totalAttendance > 0) rankBadge = `<span class="rank-badge rank-1">🥇</span>`;
-    if (rank === 2 && m.totalAttendance > 0) rankBadge = `<span class="rank-badge rank-2">🥈</span>`;
-    if (rank === 3 && m.totalAttendance > 0) rankBadge = `<span class="rank-badge rank-3">🥉</span>`;
+    let rankClass = 'rank-normal';
+    if (rank === 1 && m.totalAttendance > 0) rankClass = 'rank-1';
+    if (rank === 2 && m.totalAttendance > 0) rankClass = 'rank-2';
+    if (rank === 3 && m.totalAttendance > 0) rankClass = 'rank-3';
 
     return `
       <tr>
-        <td>${rankBadge}</td>
+        <td><b class="${rankClass}">${rank}</b></td>
         <td><b>${esc(m.nta)}</b></td>
         <td>${esc(m.nama)}</td>
         <td><span class="badge badge-unit">${esc(m.unit)}</span></td>
-        <td><b style="font-size: 1.05rem; color: var(--gold-600)">${m.totalAttendance}</b> kali</td>
+        <td><b>${m.totalAttendance}</b> kali</td>
       </tr>
     `;
-  }).join('') || `<tr><td colspan="5" class="text-center" style="padding: 24px; color: var(--text-muted)">Belum ada data anggota.</td></tr>`;
+  }).join('') || `<tr><td colspan="5" class="text-center" style="padding: 20px; color: var(--ink-muted)">Belum ada data anggota.</td></tr>`;
 }
 
 // 4. Data Anggota (Admin)
